@@ -7,9 +7,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [commonjs()],
+      external: [
+        'firebase',
+        'firebase/firestore',
+        'firebase/app'
+      ]
     },
   },
   optimizeDeps: {
+    include: ['firebase/app', 'firebase/firestore'],
     exclude: ['firebase'], // Optional, if issues persist
   },
 });
