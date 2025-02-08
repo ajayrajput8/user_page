@@ -8,8 +8,15 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   build: {
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
-      external: ['some-external-package']
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor"; // Separates dependencies from your app code
+          }
+        },
+      },
     }
   }
 });
