@@ -10,12 +10,13 @@ export default defineConfig({
       external: [
         'firebase',
         'firebase/firestore',
+        'firebase/auth',
         'firebase/app'
       ]
     },
   },
   optimizeDeps: {
-    include: ['firebase/app', 'firebase/firestore'],
+    include: ['firebase/app', 'firebase/auth','firebase/firestore'],
     exclude: ['firebase'], // Optional, if issues persist
   },
 });
