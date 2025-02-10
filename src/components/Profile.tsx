@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Phone, User,Package} from 'lucide-react';
+import { MapPin, Phone, User,Package,LocateIcon} from 'lucide-react';
 import {doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
 import {db} from '../firebase'
 
@@ -20,6 +20,7 @@ export function Profile() {
   const [userData, setUserData] = useState<{
     name: string;
     phone: string;
+    manualLoc: string;
     location: { latitude: number; longitude: number };
   } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -102,6 +103,11 @@ export function Profile() {
             <div className="flex items-center space-x-3">
               <Phone className="text-emerald-600" size={20} />
               <span className="text-gray-700">+91 {userData?.phone}</span>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <LocateIcon className="text-emerald-600" size={20} />
+              <span className="text-gray-700">{userData?.manualLoc}</span>
             </div>
             
             <div className="flex items-center space-x-3">
