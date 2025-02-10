@@ -20,6 +20,7 @@ export interface User {
     longitude: number;
     address?: string;
   }
+  manualLoc: string;
 };
 
 export interface Users{
@@ -30,5 +31,6 @@ export interface Users{
     latitude: number;
     longitude: number;
   };
+  manualLoc: string;
   createdAt?: Date;
 }
