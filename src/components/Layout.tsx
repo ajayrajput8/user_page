@@ -11,7 +11,7 @@ interface LayoutProps {
 
 export function Layout({ children, cartItemsCount = 0, onCartClick}: LayoutProps) {
   const [showProfile, setShowProfile] = useState(false);
-
+//sticky
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="sticky top-0 bg-white shadow-md z-50 bg-white shadow-sm">
