@@ -11,15 +11,15 @@ export function OrderConfirmation({ items, user, onClose }: OrderConfirmationPro
   const total = items.reduce((sum, item) => sum + (item.price-(item.price * (item.discount / 100)) )* item.quantity, 0);
   const orderNumber = Math.random().toString(36).substring(2, 10).toUpperCase();
 
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-lg w-full p-6">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2">
+      <div className="bg-white rounded-lg max-w-lg w-full p-6 my-40">
         <div className="text-center mb-6">
-          <div className="mx-auto w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-            <Check className="text-emerald-600" size={24} />
+          <div className="mx-auto w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+            <Check className="text-emerald-600" size={16} />
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Order Placed!</h2>
-          <p className="text-gray-600 mt-1">Order #{orderNumber}</p>
         </div>
 
         <div className="space-y-4 mb-6">
@@ -45,8 +45,8 @@ export function OrderConfirmation({ items, user, onClose }: OrderConfirmationPro
               </span>
             </div>
           </div>
-
-          <div className="border rounded-lg divide-y">
+         {/*max-h-96 overflow-y-auto border rounded-lg divide-y*/}
+          <div className="max-h-48 overflow-y-auto">
             {items.map((item) => (
               <div key={item.id} className="flex justify-between p-4">
                 <div>
