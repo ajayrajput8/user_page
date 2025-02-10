@@ -5,7 +5,7 @@ import {getDoc,addDoc, serverTimestamp,doc, setDoc} from 'firebase/firestore'
 import {db} from '../firebase'
 
 interface RegistrationProps {
-  onComplete: (user: { name: string; phone: string; location: { latitude: number; longitude: number; }}) => void;
+  onComplete: (user: { name: string; phone: string; manualLoc: string; location: { latitude: number; longitude: number; }} ) => void;
 }
 
 //Main Function
@@ -13,6 +13,7 @@ export function Registration({ onComplete }: RegistrationProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState<{ latitude: number; longitude: number; } | null>(null);
+  const [manualLoc,setManual]=useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   //const [submitting, setSubmitting] = useState(false);
@@ -60,6 +61,7 @@ export function Registration({ onComplete }: RegistrationProps) {
             name: userData.name,
             phone: userData.phone,
             location: userData.location,
+            manualLoc: userData.name,
           });
           return;
         }
@@ -72,30 +74,6 @@ export function Registration({ onComplete }: RegistrationProps) {
 
     fetchUserData();
   }, [id, onComplete]);
-
-  /*useEffect(() => {
-    const fetchUserData = async () => {
-      if (id) {
-        try{
-        const userRef = doc(db, 'users', id);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          console.log(userData.name)
-          console.log(id);
-          onComplete({
-            name: userData.name,
-            phone: userData.phone,
-            location: userData.location,
-          });
-        }
-      }catch(error){
-        console.error("Error fetching user data:", error);
-      }
-    }
-    };
-    fetchUserData();
-  }, [id]);*/
 
 
   if(id==''){
@@ -120,7 +98,7 @@ export function Registration({ onComplete }: RegistrationProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!location || !name || !phone) return;
+    if (!location || !name || !phone||!manualLoc) return;
     try {
       const sanitizedPhone = sanitizePhone(phone);
 
@@ -129,12 +107,13 @@ export function Registration({ onComplete }: RegistrationProps) {
         name,
         phone: sanitizedPhone,
         location,
+        manualLoc,
         createdAt: serverTimestamp(),
         lastActive: serverTimestamp()
       });
 
     localStorage.setItem('currentUserId', id);
-    onComplete({ name, phone, location });
+    onComplete({ name, phone, location,manualLoc });
     } catch (error) {
       console.error('Registration error:', error);
       setError('Failed to complete registration');
@@ -153,7 +132,7 @@ export function Registration({ onComplete }: RegistrationProps) {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="shadow-sm -space-y-px">
             <div>
               <input
                 type="text"
@@ -170,8 +149,18 @@ export function Registration({ onComplete }: RegistrationProps) {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
                 placeholder="Phone Number"
+              />
+            </div>
+            <div>
+              <input
+                type="location"
+                required
+                value={manualLoc}
+                onChange={(e) => setManual(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
+                placeholder="Location"
               />
             </div>
           </div>
@@ -190,7 +179,7 @@ export function Registration({ onComplete }: RegistrationProps) {
           <div>
             <button
               type="submit"
-              disabled={!location || !name || !phone}
+              disabled={!location || !name || !phone||!manualLoc}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:bg-gray-400"
             >
               Continue Shopping
