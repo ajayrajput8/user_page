@@ -8,6 +8,7 @@ interface Order {
     quantity: number;
     unit: string;
   }>;
+  manLoc: string;
   total: number;
   status: string;
   createdAt: Date;
