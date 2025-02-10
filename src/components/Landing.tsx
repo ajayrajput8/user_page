@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import { Leaf, ArrowRight, Star, Truck, ShieldCheck, Citrus as Fruit } from 'lucide-react';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider,setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 interface GoogleAuth{
   onComplete: (Id: string)=>void;
@@ -8,6 +8,14 @@ interface GoogleAuth{
 
 export default function Home({onComplete}: GoogleAuth) {
   const [error,setError]=useState('');
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('currentUserId');
+    if (storedUserId) {
+      onComplete(storedUserId);
+    }
+  }, [onComplete]);
+
   const handleGoogleSignIn = async () => {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
@@ -18,7 +26,6 @@ export default function Home({onComplete}: GoogleAuth) {
           const userId = `user_${user.email.replace(/[^a-zA-Z0-9]/g, '_')}`;
           localStorage.setItem('currentUserId', userId);
           onComplete(userId);
-          console.log(userId);
         }
       } catch (error) {
         console.error('Google Sign-In error:', error);
@@ -26,6 +33,15 @@ export default function Home({onComplete}: GoogleAuth) {
       }
     };
 
+    const auth = getAuth();
+    setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Have a nice Day");
+  })
+  .catch((error) => {
+    console.error("Error enabling persistence", error);
+  });
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
