@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useId} from 'react';
 import { MapPin } from 'lucide-react';
 import Home from './Landing';
-import {addDoc, serverTimestamp,doc, setDoc} from 'firebase/firestore'
+import {getDoc,addDoc, serverTimestamp,doc, setDoc} from 'firebase/firestore'
 import {db} from '../firebase'
 
 interface RegistrationProps {
@@ -17,7 +17,7 @@ export function Registration({ onComplete }: RegistrationProps) {
   const [error, setError] = useState('');
   //const [submitting, setSubmitting] = useState(false);
   const [id,setId]=useState('');
-
+  const [checkingUser, setCheckingUser] = useState(true);
   
   //Automatic Location Detection
   useEffect(() => {
@@ -42,9 +42,73 @@ export function Registration({ onComplete }: RegistrationProps) {
     }
   }, []);
 
+  //console.log(id);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!id) return;
+
+      try {
+        const userRef = doc(db, 'users', id);
+        const userSnap = await getDoc(userRef);
+        //console.log(id);
+
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          console.log(userData.name)
+          onComplete({
+            name: userData.name,
+            phone: userData.phone,
+            location: userData.location,
+          });
+          return;
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setCheckingUser(false);
+      }
+    };
+
+    fetchUserData();
+  }, [id, onComplete]);
+
+  /*useEffect(() => {
+    const fetchUserData = async () => {
+      if (id) {
+        try{
+        const userRef = doc(db, 'users', id);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          console.log(userData.name)
+          console.log(id);
+          onComplete({
+            name: userData.name,
+            phone: userData.phone,
+            location: userData.location,
+          });
+        }
+      }catch(error){
+        console.error("Error fetching user data:", error);
+      }
+    }
+    };
+    fetchUserData();
+  }, [id]);*/
+
+
   if(id==''){
     return < Home onComplete={setId}/>;
-    console.log(id);
+
+  }
+
+  if (checkingUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+      </div>
+    );
   }
 
   //Sanitized Phone Number
