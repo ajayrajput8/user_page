@@ -19,8 +19,15 @@ function App() {
   const [showCart, setShowCart] = useState(false);
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
   const [confirmedItems, setConfirmedItems] = useState<CartItem[]>([]);
-  //gpt
   const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      console.log(user)
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,8 +37,8 @@ function App() {
     };
     fetchProducts();
   }, []);
-
-  const filteredProducts = products.filter((product) => {
+  
+    const filteredProducts = products.filter((product) => {
     const matchesCategory = category === 'all' || product.category === category;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
