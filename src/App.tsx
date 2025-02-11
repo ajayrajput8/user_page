@@ -104,7 +104,9 @@ function App() {
       onProfileClick={() => setShowProfile(!setShowProfile)}
     >
       {showProfile ? (
-        <Profile />
+        <Profile 
+          onClose={()=>setShowProfile(false)}
+        />
       ):(
       <div className="space-y-6">
         <div className="flex space-x-4">
@@ -159,7 +161,9 @@ function App() {
         )}
 
         {showProfile && (
-          <Profile/>
+          <Profile
+            onClose={() => setShowProfile(false)}         
+          />
         )}
 
         {showOrderConfirmation && user && (
