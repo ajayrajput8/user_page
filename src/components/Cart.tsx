@@ -70,69 +70,6 @@ interface CartProps {
       </div>
     );
   }
-  //fflex justify-center items-center min-h-screen p-6 bg-black bg-opacity-50
-
-  {/*return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 ">
-      <div className="bg-white rounded-lg max-w-lg w-full p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Your Cart</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="max-h-96 overflow-y-auto">
-          {items.map((item) => (
-            <div key={item.id} className="flex items-center py-4 border-b">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-16 h-16 object-cover rounded"
-              />
-              <div className="ml-4 flex-1">
-                <h3 className="font-medium">{item.name}</h3>
-                <p className="text-gray-500">₹{item.price-(item.price * (item.discount / 100))}/{item.unit}</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => onUpdateQuantity(item.id, -1)}
-                  className="p-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="w-8 text-center">{item.quantity}</span>
-                <button
-                  onClick={() => onUpdateQuantity(item.id, 1)}
-                  className="p-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-6 space-y-4">
-          <div className="flex justify-between text-lg font-semibold">
-            <span>Total</span>
-            <span>₹{total.toFixed(2)}</span>
-          </div>
-          <button
-            onClick={handleCheckout}
-            disabled={submitting}
-            className="w-full py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-          >
-            {submitting ? 'Processing Order...' : 'Proceed to Checkout'}
-          </button>
-          {error && (
-            <p className="text-red-500 text-sm text-center mt-2">{error}</p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}*/}
 
 return (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
