@@ -39,7 +39,7 @@ export function Layout({ children, cartItemsCount = 0, onCartClick}: LayoutProps
         </div>
       </header>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {showProfile ? <Profile key={showProfile ? "profile" : "content"} /> : children}
+          {showProfile ? <Profile onClose={()=>setShowProfile(false)} key={showProfile ? "profile" : "content"} /> : children}
 
       </main>
     </div>
