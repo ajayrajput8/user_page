@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Phone, User,Package,LocateIcon} from 'lucide-react';
-import {doc, getDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { MapPin, Phone, User,Package,LocateIcon,Trash,Edit,X,MapPinned} from 'lucide-react';
+import {doc, getDoc, collection, getDocs, query, orderBy,updateDoc,deleteDoc } from 'firebase/firestore';
 import {db} from '../firebase'
 
 interface Order {
@@ -16,7 +16,11 @@ interface Order {
   createdAt: Date;
 }
 
-export function Profile() {
+interface Prof{
+  onClose: ()=>void;
+}
+
+export function Profile({onClose}: Prof) {
   const [userData, setUserData] = useState<{
     name: string;
     phone: string;
@@ -27,6 +31,8 @@ export function Profile() {
   const [error, setError] = useState('');
   const [completedOrder,setCompletedOrder]=useState<Order[]>([]);
   const [pendingOrder,setPendingOrder]=useState<Order[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState({ name: '', phone: '', manualLoc: '' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +47,11 @@ export function Profile() {
         const userDoc = await getDoc(doc(db, 'users', userId));
         if (userDoc.exists()) {
           setUserData(userDoc.data() as any);
+          setEditedData({
+            name: userDoc.data().name,
+            phone: userDoc.data().phone,
+            manualLoc: userDoc.data().manualLoc,
+          });
         }
 
         // Fetch user orders
@@ -72,6 +83,35 @@ export function Profile() {
     fetchData();
   }, []);
 
+  const handleEdit = async () => {
+    const userId = localStorage.getItem('currentUserId');
+    if (!userId) return;
+    try {
+      await updateDoc(doc(db, 'users', userId), editedData);
+      setUserData((prevUserData) => ({
+        ...prevUserData!, // Preserve existing values
+        name: editedData.name,
+        phone: editedData.phone,
+        manualLoc: editedData.manualLoc,
+        location: prevUserData?.location || { latitude: 0, longitude: 0 },
+      }));
+      setIsEditing(false);
+    } catch (err) {
+      console.error('Update error:', err);
+    }
+  };
+
+  const handleDeleteOrder = async (orderId: string) => {
+    const userId = localStorage.getItem('currentUserId');
+    if (!userId) return;
+    try {
+      await deleteDoc(doc(db, 'users', userId, 'orders', orderId));
+      setPendingOrder(prev => prev.filter(order => order.id !== orderId));
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -92,26 +132,52 @@ export function Profile() {
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Profile</h1>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
+        <div className="relative bg-white rounded-lg shadow-sm p-6">
+            <button
+                onClick={onClose}
+                className="absolute -top-8 -right-2 text-red-500 p-2 hover:text-red-700 transition"
+              >
+              <div className='flex item-center space-x-1'>
+                <span>Close Profile</span>
+                <X size={24} />
+              </div>
+              </button>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Your Profile</h1>
+          <button
+              onClick={() => setIsEditing(true)}
+              className="bg-emerald-200 hover:bg-gray-300 transition p-2 sm:p-2.5 rounded-lg"
+            >
+              <Edit className="w-4 h-4 sm:w-5 sm:h-5" size={12} />
+            </button>
+          </div> 
+          
+          {isEditing ? (
+            <>
+              <input type="text" value={editedData.name} onChange={e => setEditedData({ ...editedData, name: e.target.value })} className="border p-2 rounded w-full" />
+              <input type="text" value={editedData.phone} onChange={e => setEditedData({ ...editedData, phone: e.target.value })} className="border p-2 rounded w-full mt-2" />
+              <input type="text" value={editedData.manualLoc} onChange={e => setEditedData({ ...editedData, manualLoc: e.target.value })} className="border p-2 rounded w-full mt-2" />
+              <button onClick={handleEdit} className="bg-emerald-600 text-white p-2 rounded mt-2 w-full sm:w-auto">Save</button>
+            </>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
               <User className="text-emerald-600" size={20} />
               <span className="text-gray-700">{userData?.name}</span>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <Phone className="text-emerald-600" size={20} />
-              <span className="text-gray-700">+91 {userData?.phone}</span>
+              <span className="text-gray-700">{userData?.phone}</span>
             </div>
 
             <div className="flex items-center space-x-3">
-              <LocateIcon className="text-emerald-600" size={20} />
+              <MapPin className="text-emerald-600" size={20} />
               <span className="text-gray-700">{userData?.manualLoc}</span>
             </div>
-            
+
             <div className="flex items-center space-x-3">
-              <MapPin className="text-emerald-600" size={20} />
+              <MapPinned className="text-emerald-600" size={20} />
               <a
                 href={`https://maps.google.com/?q=${userData?.location.latitude},${userData?.location.longitude}`}
                 target="_blank"
@@ -121,7 +187,10 @@ export function Profile() {
                 View on Map
               </a>
             </div>
-          </div>
+
+              
+            </div>
+          )}
         </div>
 
         {/* Order History */}
@@ -149,13 +218,18 @@ export function Profile() {
                           })}
                       </p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-sm ${
-                      order.status === 'pending' 
-                        ? 'bg-yellow-100 text-yellow-800' 
-                        : 'bg-emerald-100 text-emerald-800'
-                    }`}>
-                      {order.status}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded-full text-sm ${
+                        order.status === 'pending' 
+                          ? 'bg-yellow-100 text-yellow-800' 
+                          : 'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        {order.status}
+                      </span>
+                      <button onClick={() => handleDeleteOrder(order.id)} className="px-2 py-1 rounded-full text-sm text-red-600 hover:bg-red-100">
+                        <Trash size={24} />
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="space-y-2">
