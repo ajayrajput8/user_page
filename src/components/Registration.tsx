@@ -52,7 +52,7 @@ export function Registration({ onComplete }: RegistrationProps) {
       try {
         const userRef = doc(db, 'users', id);
         const userSnap = await getDoc(userRef);
-        //console.log(id);
+        console.log(id);
 
         if (userSnap.exists()) {
           const userData = userSnap.data();
