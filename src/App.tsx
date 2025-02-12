@@ -44,7 +44,7 @@ function App() {
     return matchesCategory && matchesSearch;
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
       event.returnValue = ''; // Required for Chrome
@@ -66,7 +66,7 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, []);*/
   
   const handleAddToCart = (product: Product) => {
     setCartItems((prev) => {
