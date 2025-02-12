@@ -13,30 +13,6 @@ export function Layout({ children, cartItemsCount = 0, onCartClick}: LayoutProps
   const [showProfile, setShowProfile] = useState(false);
 //sticky
 
-useEffect(() => {
-  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    event.preventDefault();
-    event.returnValue = ''; // Required for Chrome
-  };
-
-  const handlePopState = () => {
-    const userConfirmed = window.confirm("Do you want to close?");
-    if (!userConfirmed) {
-      window.history.pushState(null, '', window.location.pathname); // Push state back to prevent going back
-    }
-  };
-
-  window.addEventListener('beforeunload', handleBeforeUnload);
-  window.addEventListener('popstate', handlePopState);
-
-  window.history.pushState(null, '', window.location.pathname); // Add initial state to history
-
-  return () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-    window.removeEventListener('popstate', handlePopState);
-  };
-}, []);
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="sticky top-0 bg-white shadow-md z-50 bg-white shadow-sm">
