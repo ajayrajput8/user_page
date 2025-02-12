@@ -19,6 +19,8 @@ export function ProductList({
   onSearch,
 }: ProductListProps) {
 
+  const sortedProducts = [...products].sort((a, b) => (b.pin === 'Yes' ? 1 : 0) - (a.pin === 'Yes' ? 1 : 0));
+
   return (
     <div className="space-y-6">
       <div className="relative">
@@ -32,7 +34,7 @@ export function ProductList({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => {
+        {sortedProducts.map((product) => {
           const cartItem = cartItems.find((item) => item.id === product.id);
           //gpt
           const discountPrice = product.price - (product.price * (product.discount / 100));
