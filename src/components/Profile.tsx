@@ -83,6 +83,20 @@ export function Profile({onClose}: Prof) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleBackButton = (event: PopStateEvent) => {
+      event.preventDefault();
+      onClose(); // Close the cart and show the product list
+    };
+  
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', handleBackButton);
+  
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, [onClose]);
+  
   const handleEdit = async () => {
     const userId = localStorage.getItem('currentUserId');
     if (!userId) return;
