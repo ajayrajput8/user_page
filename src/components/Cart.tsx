@@ -24,6 +24,20 @@ interface CartProps {
       const userId = localStorage.getItem('currentUserId');
       setCurrentUser(userId);
     }, []);
+
+    useEffect(() => {
+      const handleBackButton = (event: PopStateEvent) => {
+        event.preventDefault();
+        onClose(); // Close the cart and show the product list
+      };
+    
+      window.history.pushState(null, '', window.location.href);
+      window.addEventListener('popstate', handleBackButton);
+    
+      return () => {
+        window.removeEventListener('popstate', handleBackButton);
+      };
+    }, [onClose]);
   
     const handleCheckout = async () => {
       if (!currentUser) {
