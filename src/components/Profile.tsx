@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Phone, User,Package,LocateIcon,Trash,Edit,X,MapPinned} from 'lucide-react';
+import { MapPin, Phone, User,Package,LocateIcon,Trash,Edit,X,MapPinned,LogOut} from 'lucide-react';
 import {doc, getDoc, collection, getDocs, query, orderBy,updateDoc,deleteDoc } from 'firebase/firestore';
 import {db} from '../firebase'
 
@@ -20,6 +20,7 @@ interface Prof{
   onClose: ()=>void;
 }
 
+
 export function Profile({onClose}: Prof) {
   const [userData, setUserData] = useState<{
     name: string;
@@ -33,6 +34,11 @@ export function Profile({onClose}: Prof) {
   const [pendingOrder,setPendingOrder]=useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({ name: '', phone: '', manualLoc: '' });
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUserId');
+    window.location.reload();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,19 +158,26 @@ export function Profile({onClose}: Prof) {
                 className="absolute -top-8 -right-2 text-red-500 p-2 hover:text-red-700 transition"
               >
               <div className='flex item-center space-x-1'>
-                <span>Close Profile</span>
-                <X size={24} />
+                
               </div>
               </button>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Your Profile</h1>
-          <button
-              onClick={() => setIsEditing(true)}
-              className="bg-emerald-200 hover:bg-gray-300 transition p-2 sm:p-2.5 rounded-lg"
-            >
-              <Edit className="w-4 h-4 sm:w-5 sm:h-5" size={12} />
-            </button>
+          <div className='flex item-center gap-6'>
+              <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-emerald-200 hover:bg-gray-300 transition p-2 sm:p-2.5 rounded-lg"
+                >
+                  <Edit className="w-5 h-5 sm:w-5 sm:h-5" size={24} />
+                </button>
+                <button 
+                      onClick={handleLogout} 
+                      className="relative p-2 bg-emerald-200 text-gray-600 hover:bg-red-600 hover:text-white transition-colors rounded-lg">
+                      <LogOut size={24}/>
+                    </button>
+                </div>
           </div> 
+
           
           {isEditing ? (
             <>
@@ -314,6 +327,9 @@ export function Profile({onClose}: Prof) {
               ))}
             </div>
           )}
+          
+        </div>
+        <div className="bg-white rounded-lg shadow-sm p-6 text-center">
           
         </div>
 
