@@ -6,6 +6,8 @@ export interface Product {
   image: string;
   unit: string;
   discount: number;
+  pin: string;
+  min: number;
 }
 
 export interface CartItem extends Product {
