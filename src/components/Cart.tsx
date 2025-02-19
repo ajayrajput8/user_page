@@ -1,4 +1,4 @@
-import { X, Plus, Minus } from 'lucide-react';
+import { X, Plus, Minus, Truck } from 'lucide-react';
 import {useEffect} from 'react'
 import { useState } from 'react';
 import { CartItem } from '../types';
@@ -40,6 +40,13 @@ interface CartProps {
     }, [onClose]);
   
     const handleCheckout = async () => {
+    const itemsBelowMin = items.filter((item) => item.quantity < item.min);
+    if (itemsBelowMin.length > 0) {
+      const itemNames = itemsBelowMin.map((item) => item.name).join(', ');
+      const itemMin =itemsBelowMin.map((item)=>item.min).join(', ');
+      alert(`You can't purchase ${itemNames} less than ${itemMin} unit. Please increase to the minimum required quantity.`);
+      return;
+    }
       if (!currentUser) {
         alert('Please complete registration first');
         return;
@@ -90,11 +97,12 @@ return (
     <div className="bg-white rounded-lg max-w-lg w-full p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Your Cart</h2>
+        
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
           <X size={24} />
         </button>
       </div>
-
+      <h2 className="text-sm font-semibold"><div className="flex items-center text-emerald-700">Free  <Truck size={20}/>  Delivery</div></h2>
       <div className="max-h-96 overflow-y-auto">
         {items.map((item) => (
           <div key={item.id} className="flex items-center py-4 border-b">
