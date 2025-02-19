@@ -49,6 +49,8 @@ export function ProductList({
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+                {product.min>1 && (
+                <span className="text-red-500 text-sm font-medium">Atleast {product.min?product.min:1} {product.unit}</span>)}
                 <div className="flex items-center space-x-2 mt-1">
                   <span className="text-gray-500 line-through">₹{product.price}</span>
                   <span className="text-emerald-600 font-semibold">₹{discountPrice.toFixed(2)}/{product.unit}</span>
