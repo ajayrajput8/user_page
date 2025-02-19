@@ -44,7 +44,7 @@ interface CartProps {
     if (itemsBelowMin.length > 0) {
       const itemNames = itemsBelowMin.map((item) => item.name).join(', ');
       const itemMin =itemsBelowMin.map((item)=>item.min).join(', ');
-      alert(`You can't purchase ${itemNames} less than ${itemMin} unit. Please increase to the minimum required quantity.`);
+      alert(`You can't purchase ${itemNames}less than ${itemMin} unit. Please increase quantity upto the minimum required quantity.`);
       return;
     }
       if (!currentUser) {
@@ -102,7 +102,7 @@ return (
           <X size={24} />
         </button>
       </div>
-      <h2 className="text-sm font-semibold"><div className="flex items-center text-emerald-700">Free  <Truck size={20}/>  Delivery</div></h2>
+      <h2 className="text-sm font-semibold"><div className="flex items-center text-emerald-700">Free<Truck size={20}/>Delivery</div></h2>
       <div className="max-h-96 overflow-y-auto">
         {items.map((item) => (
           <div key={item.id} className="flex items-center py-4 border-b">
