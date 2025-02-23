@@ -57,7 +57,7 @@ export default function Home({onComplete}: GoogleAuth) {
           <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center">
               <Leaf className="h-8 w-8 text-green-400" />
-              <span className="ml-2 text-2xl font-bold">SabKi Mandi</span>
+              <span className="ml-2 text-2xl font-bold">THUGKART</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a onClick={handleGoogleSignIn} href="#" className="hover:text-green-400">Home</a>
@@ -69,10 +69,10 @@ export default function Home({onComplete}: GoogleAuth) {
           <div className="container mx-auto px-6 py-24 md:py-32">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                WelCome to<br />Sabki Mandi
+                WelCome to<br />ThugKart
               </h1>
               <p className="text-xl mb-8 text-gray-300">
-                Get farm-fresh vegetables, fruits, and groceries delivered to your doorstep. 100% organic and locally sourced.
+                Get farm-fresh vegetables and groceries delivered to your doorstep. 100% organic and locally sourced.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
@@ -109,7 +109,7 @@ export default function Home({onComplete}: GoogleAuth) {
               <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Truck className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Same Day Delivery</h3>
+              <h3 className="text-xl font-semibold mb-2">Free Delivery</h3>
               <p className="text-gray-600">Free delivery within 24 hours to ensure maximum freshness.</p>
             </div>
             <div className="text-center">
@@ -131,28 +131,28 @@ export default function Home({onComplete}: GoogleAuth) {
               <h4 className="text-lg font-semibold mb-4">Categories</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-green-400">Vegetables</a></li>
-                <li><a href="#" className="hover:text-green-400">Fresh Fruits</a></li>
+                {/*<li><a href="#" className="hover:text-green-400">Fresh Fruits</a></li>*/}
                 <li><a href="#" className="hover:text-green-400">Organic Groceries</a></li>
               </ul>
             </div>
             <div>
             <div className="grid items-center mb-4">
-              <h3 className="ml-2 text-xl font-bold">Sab Ki Mandi</h3>
+              <h3 className="ml-2 text-xl font-bold">ThugKart</h3>
             </div>
               <p className="text-gray-400">Your trusted source for fresh, organic produce and groceries.</p>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-green-400">Mob: 123456789</a></li>
-                <li><a href="#" className="hover:text-green-400">Email: sabkimandi@gmail.com</a></li>
-                <li><a href="#" className="hover:text-green-400">Insta: @sabkimandi</a></li>
+                <li><a href="#" className="hover:text-green-400">Mob: 8073511491</a></li>
+                <li><a href="#" className="hover:text-green-400">Email: thugkartofficial@gmail.com</a></li>
+                <li><a href="#" className="hover:text-green-400">Insta: @thugkart</a></li>
                 <li><a href="#" className="hover:text-green-400"></a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Sabki Mandi. All rights reserved.</p>
+            <p>&copy; 2025 ThugKart. All rights reserved.</p>
           </div>
         </div>
       </footer>
