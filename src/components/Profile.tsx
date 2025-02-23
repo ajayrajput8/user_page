@@ -340,8 +340,8 @@ export function Profile({onClose}: Prof) {
           <div className="space-y-4"> 
             <div className="mt-4 text-center text-sm text-gray-500">
               <p>Reach us if having any issue:</p>
-              <p className="text-l mt-2 font-medium">support@sabkimandi.com</p>
-              <p className="text-l mt-2">+91 8839231754</p>
+              <p className="text-l mt-2 font-medium">thugkartofficial@gmail.com</p>
+              <p className="text-l mt-2">+91 8073511491</p>
             </div>
           </div>
         </div>
